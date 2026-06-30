@@ -1,0 +1,2 @@
+Actualizar el Yylex automaticamente
+Window-->Preferences-->Hook-->Refresh using native hooks or polling

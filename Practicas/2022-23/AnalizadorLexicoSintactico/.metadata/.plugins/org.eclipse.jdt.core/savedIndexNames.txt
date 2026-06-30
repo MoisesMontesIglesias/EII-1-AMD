@@ -1,0 +1,5 @@
+INDEX VERSION 1.131+E:\3ºAño\2º cuatri\Autómatas y Matemáticas Discretas\2022-23\pruebaAMD\.metadata\.plugins\org.eclipse.jdt.core
+2026177815.index
+4015526365.index
+1865797976.index
+2828727410.index

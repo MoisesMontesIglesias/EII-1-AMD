@@ -1,0 +1,9 @@
+INDEX VERSION 1.131+E:\3ºAño\2º cuatri\Autómatas y Matemáticas Discretas\2024-25\AMD\.metadata\.plugins\org.eclipse.jdt.core
+920685508.index
+2368342417.index
+4015526365.index
+1865797976.index
+2828727410.index
+2026177815.index
+1691896857.index
+1672249308.index

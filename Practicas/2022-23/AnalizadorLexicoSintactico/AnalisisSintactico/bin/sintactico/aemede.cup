@@ -1,0 +1,127 @@
+package sintactico;
+import lexico.Yylex;
+import java.io.FileReader;
+
+action code{:
+	NewHashMap variables = new NewHashMap();
+	boolean output = true;
+:}
+
+parser code{:
+   public static void main(String args[]) throws Exception {
+		      parser p = new parser(new Yylex(new FileReader(args[0])));      
+		      System.out.println("\n Análisis sintáctico: ");
+		      System.out.println("-----------------------------------------\n");
+		      p.parse();
+    } // End Main
+                            
+	public parser (java.io.Reader input) { super(new lexico.Yylex(input)); }
+:}
+
+/* Declaracion de variables */
+non terminal PROGRAMA, BLOQUE, INSTRUCCION, IMPRIMIR, ASIGNAR;
+non terminal Double EXPRESION, TERMINO, FACTOR;
+
+/* Declaracion de terminales */
+terminal inicio, fin;
+terminal imprime, finSent;
+terminal abrePar, cierraPar;
+terminal mas, menos, por, entre, asigna;
+terminal Double real, entero;
+terminal String cadena, variable;
+
+start with PROGRAMA; // start with sirve para indicarle al parser con que produccion empezar
+
+/* PROGRAMA -> inicio BLOQUE fin | inicio fin */
+PROGRAMA::=	inicio  BLOQUE fin		
+			{: if (output) System.out.println("\tSINT: PROGRAMA <- inicio BLOQUE fin"); :} 
+		 	| inicio fin 
+		 	{: if (output) System.out.println("\tSINT: PROGRAMA <- inicio fin"); :} 
+			;
+
+/* BLOQUE -> BLOQUE INSTRUCCION | INSTRUCCION */
+BLOQUE ::=	BLOQUE INSTRUCCION	
+			{: if (output) System.out.println("\tSINT: BLOQUE <- BLOQUE INSTRUCCION"); :} 
+			| INSTRUCCION		
+			{: if (output) System.out.println("\tSINT: BLOQUE <- INSTRUCCION"); :} 
+			;
+
+/* INSTRUCCION -> IMPRIMIR | ASIGNAR  */
+INSTRUCCION ::=	IMPRIMIR 	
+				{: 
+					if (output) System.out.println("\tSINT: INSTRUCCION <- IMPRIMIR"); 
+			   	:} 
+			   	| ASIGNAR
+			   	{: if (output) System.out.println("\tSINT: INSTRUCCION <- ASIGNAR");
+			   	:} 
+				;
+			
+/* IMPRIMIR -> imprime EXPRESION:e finSent | imprime cadena:c finSent*/
+IMPRIMIR ::= imprime EXPRESION:e finSent
+			{: 
+				if (output) System.out.println("\tSINT: IMPRIMIR <- imprime EXPRESION finSent");
+				System.out.print(e);
+			:} 
+			| imprime cadena:c finSent
+			{: 
+				if (output) System.out.println("\tSINT: IMPRIMIR <- imprime EXPRESION finSent"); 
+				System.out.print(c);
+			:} 
+			;
+				
+
+/* EXPRESION -> EXPRESION mas TERMINO | EXPRESION menos TERMINO | TERMINO */
+EXPRESION ::=	EXPRESION:e mas TERMINO:t	{:
+					if (output) System.out.println("\tSINT: EXPRESION <- EXPRESION mas TERMINO"); 
+					RESULT = e + t;								
+				:}
+				| EXPRESION:e menos TERMINO:t	{:
+					if (output) System.out.println("\tSINT: EXPRESION <- EXPRESION menos TERMINO");
+					RESULT = e - t;
+                :}
+				| TERMINO:t {: 
+					if (output) System.out.println("\tSINT: EXPRESION <- TERMINO"); 
+					RESULT = t;
+				:}
+				;
+				
+/* TERMINO -> TERMINO por FACTOR | TERMINO entre FACTOR | FACTOR */
+TERMINO ::=	  TERMINO:t por FACTOR:f	{:
+					if (output) System.out.println("\tSINT: TERMINO <- TERMINO por FACTOR"); 
+					RESULT = t * f;								
+				:}
+				| TERMINO:t entre FACTOR:f	{:
+					if (output) System.out.println("\tSINT: TERMINO <- TERMINO entre FACTOR");
+					RESULT = t / f;
+                :}
+				| FACTOR:f {: 
+					if (output) System.out.println("\tSINT: TERMINO <- FACTOR"); 
+					RESULT = f;
+				:}
+				;
+
+/* FACTOR -> entero | real | variable | abrePar EXPRESION cierraPar */
+FACTOR ::=	entero:e	{: 
+				if (output) System.out.println("\tSINT: FACTOR <- entero"); 
+				RESULT = e;
+			:}
+			| real:r	{: 
+				if (output) System.out.println("\tSINT: FACTOR <- real"); 
+				RESULT = r;
+			:}
+			| variable:v	{:
+				if (output) System.out.println("\tSINT: FACTOR <- variable");
+				RESULT = variables.get(v);
+            :}
+            | abrePar EXPRESION:e cierraPar	{:
+				if (output) System.out.println("\tSINT: FACTOR <- abrePar EXPRESION cierraPar");
+				RESULT = ( e );
+            :}
+			;
+			
+/* ASIGNAR -> variable asigna EXPRESION finSent */
+ASIGNAR ::=	variable:v asigna EXPRESION:e finSent	{: 
+				if (output) System.out.println("\tSINT: ASIGNAR <- variable asigna EXPRESION finSent"); 
+				variables.put(v,e);
+			:}
+			;

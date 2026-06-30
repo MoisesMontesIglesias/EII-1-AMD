@@ -1,0 +1,9 @@
+// Test sintactico
+inicio
+	imprime 3 + 2 - 1;
+	imprime 3 * 2 + 1;
+	imprime " hola";
+	avion := 2 + 3;
+	imprime avion;
+	imprime "aaaa";
+fin

@@ -1,0 +1,89 @@
+/* Fichero: ejemplo.lex */
+package lexico;
+import java.io.InputStreamReader;
+import java.lang.System;
+%%
+%char
+%public
+%standalone
+%full
+
+LETRA = [a-zA-ZñÑ]
+DIGITO = [0-9]
+SIGNO = [+-]
+REAL = {SIGNO}?{DIGITO}+\.{DIGITO}+
+ENTERO = {SIGNO}?{DIGITO}+
+UO = (uo|uO|Uo|UO){DIGITO}{4,6}
+DIRECCIONCORREO = {UO}(@uniovi.)(es|com)
+LETRAMIN = [a-zñ]
+ALFANUM = {DIGITO}|{LETRA}
+VARIABLE = {LETRAMIN}(\_?{ALFANUM})*
+SIMBOLOS = (\+|\-|\*|\/|\(|\))
+LINEA = {SIMBOLOS}+
+BLANCO = (" "|\t)
+CADENATEXTO = \"({ALFANUM}|{BLANCO}|{SIMBOLOS})+\"|\'({ALFANUM}|{BLANCO}|{SIMBOLOS})+\'
+DOBLEBARRA = \/\/
+COMENTARIOS = {DOBLEBARRA}({ALFANUM}|{SIMBOLOS}|{BLANCO})+
+
+/* Simulacro examen 1 */
+LETRASPERMITIDAS = [a-hj-npr-zA-HJ-NPR-ZñÑ]
+ALFANUMEXAMEN = {DIGITO}|{LETRASPERMITIDAS}
+NUMEROBASTIDOR = {ALFANUMEXAMEN}{17}
+
+LETRACOMIENZOCOD = (P|LT|ST|T)
+LETRAFINALCOD = (R|D|B)
+BARRA = \/
+CODNEUMATICO = {LETRACOMIENZOCOD}?{DIGITO}{3}{BARRA}{DIGITO}{2}{LETRAFINALCOD}?{DIGITO}{2}
+
+/* Simulacro examen 2 */
+CARACTERESNOINCLUIDOS = [^;:#-(\n)]
+COMENTARIOSPYTHON = \#({CARACTERESNOINCLUIDOS})+
+
+REALEXP = {SIGNO}?{DIGITO}+\.{DIGITO}*
+EXPONENTE = (e|E){ENTERO}
+REALESCONEXPONENTE = ({REALEXP}|{ENTERO}){EXPONENTE}?
+
+/* Simulacro examen 3 */
+LETRAMAY = [A-ZÑ]
+FIRSTSECTION = (1|3|7){LETRAMIN}({LETRAMIN}{2})*
+LASTSECTION = (7|8|9)*(9){LETRAMAY}{3,4}
+EXAMCODE = {FIRSTSECTION}\.{LASTSECTION}
+
+LISTEXAMCODE = \({EXAMCODE}(\,{EXAMCODE})*\)
+
+%%
+imprime {System.out.print(" Palabra_reservada(imprime)");}
+inicio {System.out.print(" Palabra_reservada(inicio)");}
+fin {System.out.print(" Palabra_reservada(fin)");}
+
+/* Simulacro examen 1 */
+{NUMEROBASTIDOR} {System.out.print(" NumeroBastidor("+yytext()+")");}
+{CODNEUMATICO} {System.out.print(" CodNeumatico("+yytext()+")");}
+
+/* Simulacro examen 2 */
+{COMENTARIOSPYTHON} {System.out.print(" ComentariosPython("+yytext()+")");}
+{REALESCONEXPONENTE} {System.out.print(" RealExp("+yytext()+")");}
+
+/* Simulacro examen 3 */
+\-- {System.out.print(" Decrement");}
+class {System.out.print(" Palabra_reservada(CLASS)");}
+{EXAMCODE} {System.out.print(" ExamCode("+yytext()+")");}
+{LISTEXAMCODE} {System.out.print(" ListExamCode("+yytext()+")");}
+
+{COMENTARIOS} {System.out.print(" Comentarios("+yytext()+")");}
+{CADENATEXTO} {System.out.print(" Cadena("+yytext()+")");}
+{VARIABLE} {System.out.print(" Variable("+yytext()+")");}
+{DIRECCIONCORREO} {System.out.print(" Direccion Correo("+yytext()+")");}
+{REAL} {System.out.print(" Real("+yytext()+")");}
+{ENTERO} {System.out.print(" Entero("+yytext()+")");}
+; {System.out.print(" FinSentencia");}
+\:= {System.out.print(" Asigna");}
+\( {System.out.print(" Abre-Par");}
+\) {System.out.print(" Cierra-Par");}
+\/ {System.out.print(" Entre");}
+\* {System.out.print(" Por");}
+\+ {System.out.print(" Mas");}
+\- {System.out.print(" Menos");}
+{BLANCO} {System.out.print(yytext());}
+\n {System.out.print(yytext());}
+. {System.out.print(" ERROR_Lexico");}

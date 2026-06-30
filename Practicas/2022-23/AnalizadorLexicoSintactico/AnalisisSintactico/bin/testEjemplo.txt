@@ -1,0 +1,8 @@
+// Test sintactico
+inicio
+    coefA := -52;
+	b := 22.75;
+	denominador := 1-coefA;
+	imprime 'El resultado final es ';
+	imprime b/denominador;
+fin

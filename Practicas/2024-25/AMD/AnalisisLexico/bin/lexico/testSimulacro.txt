@@ -1,0 +1,8 @@
+(7a.9ABC)
+(7a.9ABC,1barww.999QWER,7a.9ABC)
+(7a.9ABC,3mmm.79CBA,3mmm.79CBA)
+(7a.9ABC,7a.9ABC,7a.9ABC,7a.9ABC)
+(a)
+{7a.9ABC}
+(7a.9ABC 7a.9ABC,7a.9ABC)
+()

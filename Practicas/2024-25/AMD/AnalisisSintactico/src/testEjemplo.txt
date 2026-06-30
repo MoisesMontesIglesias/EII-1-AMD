@@ -1,0 +1,8 @@
+// Programa de ejemplo
+inicio
+	a := 3;
+	b := (a + 3) * 3 / (d - 2);
+	imprime a == b;
+	c := a * (b - 5);
+	imprime a > c + 1;
+fin
